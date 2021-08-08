@@ -1,19 +1,30 @@
-import React, { useState, useRef } from 'react';
-import {useForm} from "../useForm.js";
-// import axios from 'axios';
+import React, { useState, useEffect, useRef } from 'react';
+// import {useForm} from "../useForm.js";
+import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
 
 const CreateFood = () => {
     // const [values, handleChange] = useForm({username: "", name: "", calories: 0, protein: 0, date: new Date()})
-    const [users, setUsers] = useState(["test user"]);
+    const [users, setUsers] = useState(["test user", "Steven"]);
     const [username, setUsername] = useState("");
     const [name, setName] = useState("");
     const [calories, setCalories] = useState(0);
     const [protein, setProtein] = useState(0);
     const [date, setDate] = useState(new Date());
     const userInput = useRef();
+
+    useEffect(() => {
+      axios.get('http://localhost:5000/users/')
+        .then(res  => {
+          if (res.data.length > 0) {
+            setUsers(res.data.map(user => user.username));
+            setUsername(res.data[0].username);
+          }
+        })
+    },[]);
+
     function onSubmit(e) {
         e.preventDefault();
 
@@ -25,12 +36,15 @@ const CreateFood = () => {
             date: date
         }
         console.log(food)
-
+        
+        axios.post('http://localhost:5000/foods/add', food)
+        .then(res => console.log(res.data))
+        .catch(error => console.log(error));
         // window.location = "/";
     };
 
     return (
-        <div>
+        <div className="container">
         <h3>Create New Food Log</h3>
         <form onSubmit={(e) => onSubmit(e)}>
           <div className="form-group"> 
@@ -39,7 +53,7 @@ const CreateFood = () => {
                 required
                 className="form-control"
                 value={username}
-                onChange={e => setUsername(e.target.value)}
+                onChange={() => setUsername("Stevenlin55")}
             >
                 {
                   users.map(function(user) {
@@ -84,7 +98,7 @@ const CreateFood = () => {
               <DatePicker
                 className="my-4 border-4"
                 selected={date}
-                onChange={e => setDate(e.target.value)}
+                onChange={date => setDate(date)}
               />
             </div>
           </div>
