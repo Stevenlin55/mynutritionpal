@@ -42,21 +42,32 @@ const FoodDiary = () => {
     }
 
     return (
-        <div className="container">
-        <h3>Logged Foods</h3>
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
-              <th>Username</th>
-              <th>Name</th>
-              <th>Calories</th>
-              <th>Protein</th>
-            </tr>
-          </thead>
-          <tbody>
-            { foodList() }
-          </tbody>
-        </table>
+        <div className="container bg-gray-50 my-8">
+          <div className="flex">
+            <p>Your Food Diary For: </p>
+            <div className="flex">
+              <div className="bg-blue-700 w-7 h-7"></div>
+            </div>
+          </div>
+
+{/* 
+        <div className="hidden">
+          <h3>Logged Foods</h3>
+          <table className="table">
+            <thead className="thead-light">
+              <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Calories</th>
+                <th>Protein</th>
+              </tr>
+            </thead>
+            <tbody>
+              { foodList() }
+            </tbody>
+          </table>
+        </div> */}
+       
         </div>
     );
 };
