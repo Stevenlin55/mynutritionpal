@@ -73,34 +73,34 @@ const FoodDiary = () => {
         </div>
       </div>
 
-      <div className="mx-auto">
-        <table class="table-auto">
+      <div className="mt-5">
+        <table className="mx-auto w-3/4 border-collapse">
           <thead>
             <tr>
-              <th></th>
-              <th>Calories (kcal)</th>
-              <th>Protein (g)</th>
+              <th className="w-8/12"></th>
+              <th className="border border-gray-600 bg-blue-600 text-center text-white">Calories (kcal)</th>
+              <th className=" border border-gray-600 bg-blue-600 text-center text-white">Protein (g)</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Grilled Chicken Sandwich</td>
-              <td>400</td>
-              <td>40</td>
+            <tr className="bg-gray-200 ">
+              <td className="border border-gray-600">Chicken Fried Rice from chinese restaurant</td>
+              <td className="border border-gray-600 text-center">400</td>
+              <td className="border border-gray-600 text-center">40</td>
             </tr>
-            <tr class="bg-emerald-200">
-              <td>
+            <tr className="bg-gray-200">
+              <td className="border border-gray-600">
                 Egg Tart
               </td>
-              <td>200</td>
-              <td>1</td>
+              <td className="border border-gray-300 text-center">200</td>
+              <td className="border border-gray-300 text-center">1</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      {/* 
-        <div className="hidden">
+      
+        <div className="">
           <h3>Logged Foods</h3>
           <table className="table">
             <thead className="thead-light">
@@ -115,7 +115,7 @@ const FoodDiary = () => {
               { foodList() }
             </tbody>
           </table>
-        </div> */}
+        </div> 
     </div>
   );
 };
