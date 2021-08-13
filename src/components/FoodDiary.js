@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { FaCaretSquareLeft, FaCaretSquareRight } from "react-icons/fa";
+import { FaCaretSquareLeft, FaCaretSquareRight, FaPencilAlt, FaTrash} from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+//food component that is created in createFoodList()
 const Food = (props) => (
-  <tr>
-    <td>{props.food.username}</td>
-    <td>{props.food.name}</td>
-    <td>{props.food.calories}</td>
-    <td>{props.food.protein}</td>
-    <td>
-      <Link to={"/edit/" + props.food._id}>edit</Link> |{" "}
+  <tr className="bg-gray-200">
+    {/* <td className="border border-white">{props.food.username}</td> you can get username from props*/} 
+    
+    <td className="border border-white group">
+      {props.food.name} <Link to={"/edit/" + props.food._id}><FaPencilAlt className="inline text-gray-200 group-hover:text-blue-800 mr-5"/></Link>
       <a
         href="#"
         onClick={() => {
           props.deleteFood(props.food._id);
         }}
       >
-        delete
+        <FaTrash className="inline text-gray-200 group-hover:text-blue-800"/>
       </a>
     </td>
+    <td className="border border-white text-center">{props.food.calories}</td>
+    <td className="border border-white text-center">{props.food.protein}</td>
   </tr>
 );
 
@@ -48,7 +49,7 @@ const FoodDiary = () => {
     setFoods(foods.filter((food) => food._id !== id));
   }
 
-  function foodList() {
+  function createFoodList() {
     return foods.map((currentFood) => {
       return (
         <Food
@@ -78,44 +79,15 @@ const FoodDiary = () => {
           <thead>
             <tr>
               <th className="w-8/12"></th>
-              <th className="border border-gray-600 bg-blue-600 text-center text-white">Calories (kcal)</th>
-              <th className=" border border-gray-600 bg-blue-600 text-center text-white">Protein (g)</th>
+              <th className="border border-white bg-blue-600 text-center text-white">Calories (kcal)</th>
+              <th className="border border-white bg-blue-600 text-center text-white">Protein (g)</th>
             </tr>
           </thead>
-          <tbody>
-            <tr className="bg-gray-200 ">
-              <td className="border border-gray-600">Chicken Fried Rice from chinese restaurant</td>
-              <td className="border border-gray-600 text-center">400</td>
-              <td className="border border-gray-600 text-center">40</td>
-            </tr>
-            <tr className="bg-gray-200">
-              <td className="border border-gray-600">
-                Egg Tart
-              </td>
-              <td className="border border-gray-300 text-center">200</td>
-              <td className="border border-gray-300 text-center">1</td>
-            </tr>
-          </tbody>
+          <tbody>{createFoodList()}</tbody>
+          <Link to={"/create"}>Add Food</Link>
         </table>
+        
       </div>
-
-      
-        <div className="">
-          <h3>Logged Foods</h3>
-          <table className="table">
-            <thead className="thead-light">
-              <tr>
-                <th>Username</th>
-                <th>Name</th>
-                <th>Calories</th>
-                <th>Protein</th>
-              </tr>
-            </thead>
-            <tbody>
-              { foodList() }
-            </tbody>
-          </table>
-        </div> 
     </div>
   );
 };
