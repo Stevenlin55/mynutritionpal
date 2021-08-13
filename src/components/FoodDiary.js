@@ -1,33 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { FaCaretSquareLeft, FaCaretSquareRight, FaPencilAlt, FaTrash} from "react-icons/fa";
+import { FaCaretSquareLeft, FaCaretSquareRight } from "react-icons/fa";
 import DatePicker from "react-datepicker";
+import Food from "./Food.js";
 import "react-datepicker/dist/react-datepicker.css";
-
-//food component that is created in createFoodList()
-const Food = (props) => (
-  <tr className="bg-gray-200">
-    {/* <td className="border border-white">{props.food.username}</td> you can get username from props*/} 
-    
-    <td className="border border-white group">
-      {props.food.name} <Link to={"/edit/" + props.food._id}><FaPencilAlt className="inline text-gray-200 group-hover:text-blue-800 mr-5"/></Link>
-      <a
-        href="#"
-        onClick={() => {
-          props.deleteFood(props.food._id);
-        }}
-      >
-        <FaTrash className="inline text-gray-200 group-hover:text-blue-800"/>
-      </a>
-    </td>
-    <td className="border border-white text-center">{props.food.calories}</td>
-    <td className="border border-white text-center">{props.food.protein}</td>
-  </tr>
-);
 
 const FoodDiary = () => {
   const [foods, setFoods] = useState([]);
+  const [date, setDate] = useState(new Date());
 
   useEffect(() => {
     axios
@@ -50,7 +31,10 @@ const FoodDiary = () => {
   }
 
   function createFoodList() {
-    return foods.map((currentFood) => {
+    let foodList = foods.filter((food) => food.date !== date);
+    console.log(foodList)
+    return foodList.map((currentFood) => {
+      console.log(currentFood.date, date)
       return (
         <Food
           food={currentFood}
@@ -60,6 +44,7 @@ const FoodDiary = () => {
       );
     });
   }
+  
 
   return (
     <div className="container my-8">
@@ -67,9 +52,12 @@ const FoodDiary = () => {
         <div>Your Food Diary For:</div>
         <div className="flex">
           <FaCaretSquareLeft size={30} color={"blue"} className="-mr-px" />
-          <div className="flex items-center justify-center bg-blue-600 rounded-sm h-6 mt-0.5 text-white px-4 py-1">
-            Tuesday, July 21, 2021
-          </div>
+          <DatePicker
+            className="flex items-center justify-center bg-blue-600 rounded-sm h-6 mt-0.5 text-white px-4 py-1"
+            selected={date}
+            onChange={(date) => setDate(date)}
+            dateFormat="EEEE, MMMM d, yyyy"
+          />
           <FaCaretSquareRight size={30} color={"blue"} className="-ml-px" />
         </div>
       </div>
@@ -79,14 +67,17 @@ const FoodDiary = () => {
           <thead>
             <tr>
               <th className="w-8/12"></th>
-              <th className="border border-white bg-blue-600 text-center text-white">Calories (kcal)</th>
-              <th className="border border-white bg-blue-600 text-center text-white">Protein (g)</th>
+              <th className="border border-white bg-blue-600 text-center text-white">
+                Calories (kcal)
+              </th>
+              <th className="border border-white bg-blue-600 text-center text-white">
+                Protein (g)
+              </th>
             </tr>
           </thead>
           <tbody>{createFoodList()}</tbody>
           <Link to={"/create"}>Add Food</Link>
         </table>
-        
       </div>
     </div>
   );

@@ -99,6 +99,7 @@ const CreateFood = () => {
                 className="my-4 border-4"
                 selected={date}
                 onChange={date => setDate(date)}
+                dateFormat="EEEE, MMMM d, yyyy"
               />
             </div>
           </div>
