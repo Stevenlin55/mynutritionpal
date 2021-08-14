@@ -35,12 +35,12 @@ const CreateFood = () => {
             protein: protein,
             date: date
         }
-        console.log(food)
+        console.log(food.date)
         
         axios.post('http://localhost:5000/foods/add', food)
         .then(res => console.log(res.data))
         .catch(error => console.log(error));
-        window.location = "/";
+        // window.location = "/";
     };
 
     return (
@@ -99,7 +99,6 @@ const CreateFood = () => {
                 className="my-4 border-4"
                 selected={date}
                 onChange={date => setDate(date)}
-                dateFormat="EEEE, MMMM d, yyyy"
               />
             </div>
           </div>

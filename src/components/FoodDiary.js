@@ -31,10 +31,24 @@ const FoodDiary = () => {
   }
 
   function createFoodList() {
-    let foodList = foods.filter((food) => food.date !== date);
-    console.log(foodList)
+    let selectedDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate()
+    ); //converts the user selected date into a different format
+    let foodList = foods.filter((food) => {
+      //filter every food by date
+      let foodDate = new Date(food.date); //convert the MongoDB ISON date format into javascript date format
+      var formattedFoodDate = new Date(
+        foodDate.getFullYear(),
+        foodDate.getMonth(),
+        foodDate.getDate()
+      ); //converts javascript date format to different format
+      return formattedFoodDate.toString() === selectedDate.toString(); //returns array after formatting to string
+    });
+
     return foodList.map((currentFood) => {
-      console.log(currentFood.date, date)
+      //returns all food for the selected date
       return (
         <Food
           food={currentFood}
@@ -44,7 +58,6 @@ const FoodDiary = () => {
       );
     });
   }
-  
 
   return (
     <div className="container my-8">
@@ -76,7 +89,7 @@ const FoodDiary = () => {
             </tr>
           </thead>
           <tbody>{createFoodList()}</tbody>
-          <Link to={"/create"}>Add Food</Link>
+          <tbody><tr><td><Link to={"/create"}>Add Food</Link></td></tr></tbody>
         </table>
       </div>
     </div>

@@ -30,7 +30,7 @@ const EditFood = (props) => {
         setUsername(res.data[0].username);
       }
     });
-  }, []);
+  });
 
   function onSubmit(e) {
     e.preventDefault();
