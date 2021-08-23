@@ -5,6 +5,7 @@ import { FaCaretSquareLeft, FaCaretSquareRight } from "react-icons/fa";
 import DatePicker from "react-datepicker";
 import Food from "./Food.js";
 import "react-datepicker/dist/react-datepicker.css";
+import QuickAddModal from "./QuickAddModal.js";
 
 const FoodDiary = () => {
   const [foods, setFoods] = useState([]);
@@ -19,6 +20,19 @@ const FoodDiary = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  function decreaseDate() {
+    let currentDate = date;
+    //subtract a day from the date
+    currentDate.setDate(currentDate.getDate() - 1);
+    setDate(currentDate);
+  }
+
+  function increaseDate() {
+    let currentDate = date;
+    //add a day to the date
+    currentDate.setDate(currentDate.getDate() + 1);
+    setDate(currentDate);
+  }
   function deleteFood(id) {
     axios
       .delete("http://localhost:5000/foods/" + id)
@@ -64,14 +78,24 @@ const FoodDiary = () => {
       <div className="flex items-center justify-center">
         <div>Your Food Diary For:</div>
         <div className="flex">
-          <FaCaretSquareLeft size={30} color={"blue"} className="-mr-px" />
+          <FaCaretSquareLeft
+            size={30}
+            color={"blue"}
+            className="cursor-pointer -mr-px"
+            onClick={() => decreaseDate()}
+          />
           <DatePicker
             className="flex items-center justify-center bg-blue-600 rounded-sm h-6 mt-0.5 text-white px-4 py-1"
             selected={date}
             onChange={(date) => setDate(date)}
             dateFormat="EEEE, MMMM d, yyyy"
           />
-          <FaCaretSquareRight size={30} color={"blue"} className="-ml-px" />
+          <FaCaretSquareRight
+            size={30}
+            color={"blue"}
+            className="cursor-pointer -ml-px"
+            onClick={() => increaseDate()}
+          />
         </div>
       </div>
 
@@ -89,8 +113,18 @@ const FoodDiary = () => {
             </tr>
           </thead>
           <tbody>{createFoodList()}</tbody>
-          <tbody><tr><td><Link to={"/create"}>Add Food</Link></td></tr></tbody>
+          <tbody>
+            <tr>
+              <td>
+                <Link className="" to={"/create"}>
+                  Add Food
+                </Link>{" | "}
+                <div className="inline-block cursor-pointer">Quick Add</div>
+              </td>
+            </tr>
+          </tbody>
         </table>
+        <QuickAddModal />
       </div>
     </div>
   );

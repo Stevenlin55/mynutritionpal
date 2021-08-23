@@ -40,7 +40,7 @@ const CreateFood = () => {
         axios.post('http://localhost:5000/foods/add', food)
         .then(res => console.log(res.data))
         .catch(error => console.log(error));
-        // window.location = "/";
+        window.location = "/";
     };
 
     return (
