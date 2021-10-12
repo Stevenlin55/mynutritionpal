@@ -14,6 +14,7 @@ const EditFood = (props) => {
   const [date, setDate] = useState(new Date());
   const userInput = useRef();
 
+  //for future me: the code below causes everything to not change value because useEffect is always changing it back to the value in the database
   useEffect(() => {
     axios
       .get("http://localhost:5000/foods/" + props.match.params.id)

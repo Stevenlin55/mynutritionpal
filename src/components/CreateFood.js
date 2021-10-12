@@ -42,7 +42,7 @@ const CreateFood = () => {
         .catch(error => console.log(error));
         window.location = "/";
     };
-
+    
     return (
         <div className="container">
         <h3>Create New Food Log</h3>

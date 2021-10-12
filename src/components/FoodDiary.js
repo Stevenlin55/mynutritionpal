@@ -119,12 +119,11 @@ const FoodDiary = () => {
                 <Link className="" to={"/create"}>
                   Add Food
                 </Link>{" | "}
-                <div className="inline-block cursor-pointer">Quick Add</div>
+                <QuickAddModal />
               </td>
             </tr>
           </tbody>
         </table>
-        <QuickAddModal />
       </div>
     </div>
   );
