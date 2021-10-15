@@ -14,24 +14,26 @@ const EditFood = (props) => {
   const [date, setDate] = useState(new Date());
   const userInput = useRef();
 
-  //for future me: the code below causes everything to not change value because useEffect is always changing it back to the value in the database
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/foods/" + props.match.params.id)
-      .then((res) => {
-        setUsername(res.data.username);
-        setName(res.data.name);
-        setCalories(res.data.calories);
-        setProtein(res.data.protein);
-        setDate(new Date(res.data.date));
+    const fetchFoodData = () => {
+      axios
+        .get("http://localhost:5000/foods/" + props.match.params.id)
+        .then((res) => {
+          setUsername(res.data.username);
+          setName(res.data.name);
+          setCalories(res.data.calories);
+          setProtein(res.data.protein);
+          setDate(new Date(res.data.date));
+        });
+      axios.get("http://localhost:5000/users/").then((res) => {
+        if (res.data.length > 0) {
+          setUsers(res.data.map((user) => user.username));
+          setUsername(res.data[0].username);
+        }
       });
-    axios.get("http://localhost:5000/users/").then((res) => {
-      if (res.data.length > 0) {
-        setUsers(res.data.map((user) => user.username));
-        setUsername(res.data[0].username);
-      }
-    });
-  });
+    };
+    fetchFoodData();
+  }, [props.match.params.id]);
 
   function onSubmit(e) {
     e.preventDefault();
