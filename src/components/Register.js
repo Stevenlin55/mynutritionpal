@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const CreateUser = () => {
+const Register = () => {
     const [username, setUsername] = useState("");
 
     function onSubmit(e) {
@@ -40,4 +40,4 @@ const CreateUser = () => {
     );
 };
 
-export default CreateUser;
+export default Register;

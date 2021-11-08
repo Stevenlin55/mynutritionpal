@@ -28,12 +28,16 @@ const Navbar = () => {
               Create User
             </Link>
           </li>
-          <button
-            type="button"
-            className="bg-gray-200 text-black rounded-md px-3 py-2 uppercase"
-          >
-            Log In
-          </button>
+          <li className="cursor-pointer">
+            <Link className="text-white no-underline" to="/login">
+              <button
+                type="button"
+                className="bg-gray-200 text-black rounded-md px-3 py-2 uppercase"
+              >
+                Log In
+              </button>
+            </Link>
+          </li>
         </ul>
 
         <div className="flex sm:hidden flex-1 justify-end">
