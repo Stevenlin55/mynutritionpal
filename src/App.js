@@ -1,5 +1,5 @@
 import React, {Fragment, useState, useEffect} from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import './styles/App.css';
 import Navbar from "./components/Navbar.js";
 
@@ -39,7 +39,7 @@ export default function App() {
     //when we know if the user is logged in or not, we render the app
     return (
       <div>
-        <Router>
+        <Router >
           <Fragment>
           {/* render navbar here */}
           <Navbar user={user}/>
