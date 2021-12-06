@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/mynutritionpal/static/css/main.ec7c4c9b.chunk.css",
-    "main.js": "/mynutritionpal/static/js/main.f4dfd522.chunk.js",
-    "main.js.map": "/mynutritionpal/static/js/main.f4dfd522.chunk.js.map",
+    "main.js": "/mynutritionpal/static/js/main.cf16df6c.chunk.js",
+    "main.js.map": "/mynutritionpal/static/js/main.cf16df6c.chunk.js.map",
     "runtime-main.js": "/mynutritionpal/static/js/runtime-main.08bd77ba.js",
     "runtime-main.js.map": "/mynutritionpal/static/js/runtime-main.08bd77ba.js.map",
     "static/css/2.e45d9621.chunk.css": "/mynutritionpal/static/css/2.e45d9621.chunk.css",
-    "static/js/2.908e11f9.chunk.js": "/mynutritionpal/static/js/2.908e11f9.chunk.js",
-    "static/js/2.908e11f9.chunk.js.map": "/mynutritionpal/static/js/2.908e11f9.chunk.js.map",
+    "static/js/2.1fe4527d.chunk.js": "/mynutritionpal/static/js/2.1fe4527d.chunk.js",
+    "static/js/2.1fe4527d.chunk.js.map": "/mynutritionpal/static/js/2.1fe4527d.chunk.js.map",
     "static/js/3.15a9c148.chunk.js": "/mynutritionpal/static/js/3.15a9c148.chunk.js",
     "static/js/3.15a9c148.chunk.js.map": "/mynutritionpal/static/js/3.15a9c148.chunk.js.map",
     "index.html": "/mynutritionpal/index.html",
     "static/css/2.e45d9621.chunk.css.map": "/mynutritionpal/static/css/2.e45d9621.chunk.css.map",
     "static/css/main.ec7c4c9b.chunk.css.map": "/mynutritionpal/static/css/main.ec7c4c9b.chunk.css.map",
-    "static/js/2.908e11f9.chunk.js.LICENSE.txt": "/mynutritionpal/static/js/2.908e11f9.chunk.js.LICENSE.txt"
+    "static/js/2.1fe4527d.chunk.js.LICENSE.txt": "/mynutritionpal/static/js/2.1fe4527d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.08bd77ba.js",
     "static/css/2.e45d9621.chunk.css",
-    "static/js/2.908e11f9.chunk.js",
+    "static/js/2.1fe4527d.chunk.js",
     "static/css/main.ec7c4c9b.chunk.css",
-    "static/js/main.f4dfd522.chunk.js"
+    "static/js/main.cf16df6c.chunk.js"
   ]
 }
