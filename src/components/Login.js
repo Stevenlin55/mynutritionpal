@@ -1,43 +1,52 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import Auth from "../auth.js";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
+  
   function onSubmit(e) {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/users/login", { username, password })
-      .then((res) => console.log(res.data));
+
+    //when the user submits the form, we want to log them in using the Auth class
+    Auth.login(username, password, (isAuthenticated) => {
+      //after attempting to log them in, we want to check if they are authenticated
+      if (isAuthenticated) {
+        //if they are authenticated, we want to redirect them to the home page
+        window.location.href = "/";
+      }
+    });
   }
 
   return (
     <div>
       <div id="login_register_bar">
         <div className="container d-flex justify-content-evenly">
-          <div className="login w-25 mt-5">
-            <h2>Sign In</h2>
-            <form onSubmit={onSubmit}>
-              <div className="form-floating">
+          <div className="login w-50 mt-5">
+            <h2>Login</h2>
+            <form className="mt-3" onSubmit={onSubmit}>
+              <div className="form-floating mt-2">
                 <input
                   className="form-control mb-3"
                   type="text"
+                  required
                   id="username_login"
                   placeholder="Username"
                   onChange = {(e) => setUsername(e.target.value)}
                 />
-                <label for="username_login">Username</label>
+                <label htmlFor="username_login">Username</label>
               </div>
               <div className="form-floating">
                 <input
                   className="form-control mb-3"
                   type="password"
+                  required
                   id="password_login"
                   placeholder="password"
                   onChange = {(e) => setPassword(e.target.value)}
                 />
-                <label for="password_login">Password</label>
+                <label htmlFor="password_login">Password</label>
               </div>
               <button
                 id="login_btn"
@@ -47,32 +56,15 @@ const Login = () => {
                 Login
               </button>
             </form>
+
+            <div className="mt-3">
+              <p>
+                Don't have an account? <Link to="/register">Register</Link>
+              </p>
+            </div>
           </div>
 
-          <div className="register w-25 mt-5">
-            <h2>Register</h2>
-            <div className="form-floating">
-              <input
-                className="form-control mb-3"
-                type="text"
-                id="username_register"
-                placeholder="Username"
-              />
-              <label for="username_register">Username</label>
-            </div>
-            <div className="form-floating">
-              <input
-                className="form-control mb-3"
-                type="password"
-                id="password_register"
-                placeholder="password"
-              />
-              <label for="password_register">Password</label>
-            </div>
-            <button id="register_btn" className="w-100 btn btn-lg btn-primary">
-              Register
-            </button>
-          </div>
+     
         </div>
       </div>
     </div>

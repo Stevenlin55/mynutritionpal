@@ -1,81 +1,153 @@
 import React, { useState, useEffect, useRef } from "react";
-// import {useForm} from "../useForm.js";
 import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { useLocation, useNavigate } from 'react-router-dom';
 const EditFood = (props) => {
-  // const [values, handleChange] = useForm({username: "", name: "", calories: 0, protein: 0, date: new Date()})
-  const [users, setUsers] = useState(["test user", "Steven"]);
-  const [username, setUsername] = useState("");
+
   const [name, setName] = useState("");
   const [calories, setCalories] = useState(0);
   const [protein, setProtein] = useState(0);
   const [date, setDate] = useState(new Date());
-  const userInput = useRef();
+
+  //we will use this to reference the oldCalories and oldProtein values
+  const oldCaloriesRef = useRef(0);
+  const oldProteinRef = useRef(0);
+  const oldDateRef = useRef(new Date());
+  //get the id, totalCalories of Total object, and totalProtein of Total object from the passed in props
+  const { state } = useLocation();
+  const { id, totalCalories, totalProtein, totalObjectID } = state;
+
+  const { user } = props;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFoodData = () => {
-      axios
-        .get("http://localhost:5000/foods/" + props.match.params.id)
+      axios.get("http://localhost:5000/foods/" + id)
         .then((res) => {
-          setUsername(res.data.username);
           setName(res.data.name);
           setCalories(res.data.calories);
           setProtein(res.data.protein);
           setDate(new Date(res.data.date));
+          //after filling in the input forms with the data from the database, we will store the oldCalories and oldProtein values in the refs
+          oldCaloriesRef.current = res.data.calories;
+          oldProteinRef.current = res.data.protein;
+          oldDateRef.current = new Date(res.data.date);
         });
-      axios.get("http://localhost:5000/users/").then((res) => {
-        if (res.data.length > 0) {
-          setUsers(res.data.map((user) => user.username));
-          setUsername(res.data[0].username);
-        }
-      });
+      
     };
     fetchFoodData();
-  }, [props.match.params.id]);
+  }, [id]);
 
   function onSubmit(e) {
     e.preventDefault();
 
-    const food = {
-      username: username,
+     //when we submit the form, we will first create a new food object with the updated values
+     const food = {
       name,
       calories: calories,
       protein: protein,
       date: date,
     };
 
-    axios
-      .post("http://localhost:5000/foods/update/" + props.match.params.id, food)
-      .then((res) => console.log(res.data))
-      .catch((error) => console.log(error));
-    window.location = "/";
+    //then we will update the foods object in the database with the new food object
+    axios.post("http://localhost:5000/foods/update/" + id, food).catch((error) => console.log(error));
+
+    //if the user changed the date, we will update totals and food based on that change
+    if (oldDateRef.current.getTime() !== date.getTime()) {
+      updateTotalsOnDateChange();
+    }else {
+      updateTotalsIfDateDidNotChange();
+    }
+
+  }
+
+  function updateTotalsOnDateChange() {
+    //first update the total object from the database for the old date. 
+    let totalObject = {
+      calories: totalCalories - oldCaloriesRef.current,
+      protein: totalProtein - oldProteinRef.current,
+    };
+    //update the total object in the database with the new total object
+    axios.post('http://localhost:5000/totals/update/' + totalObjectID, totalObject).then(()=> {
+          //after editing food and updating the total for the old date, we will update the total object for the new date
+          //first get the total object from the database for the new date by finding the right total object for the user
+          axios.get('http://localhost:5000/totals/user/' + user).then(res => {
+          
+            //convert selected date into a different format
+            let selectedDate = new Date(
+             date.getFullYear(),
+             date.getMonth(),
+             date.getDate()
+           ); 
+         
+           //filter totals by date and return an array of totals that are of the same date as the selected date
+           let total = res.data.filter((total) => {
+             //filter every food by date
+             let totalDate = new Date(total.date); //convert the MongoDB ISON date format into javascript date format
+             var formattedTotalDate = new Date(
+               totalDate.getFullYear(),
+               totalDate.getMonth(),
+               totalDate.getDate()
+             ); 
+             return formattedTotalDate.toString() === selectedDate.toString(); //returns array after formatting to string
+            });
+            let totalObjectID;
+           //if the total array is empty, then we need to create a new total object for that date
+            if (total.length === 0) {
+                totalObject = {
+                    userID: user,
+                    calories: calories,
+                    protein: protein,
+                    date: date
+                }
+                //add the new total object to the database and then return to previous page
+                axios.post('http://localhost:5000/totals/add', totalObject).then(() =>  navigate(-1)).catch(error => console.log(error));
+            }else { //if the total array is not empty, then we need to update the local object holding the totals
+              totalObject = {
+                calories: total[0].calories,
+                protein: total[0].protein,
+              }
+              //get the total object ID from the database that we will use for endpoint
+              totalObjectID = total[0]._id;
+              //update the total object to include the new food object's values
+              totalObject.calories += parseInt(calories, 10);
+              totalObject.protein += parseInt(protein, 10);
+              //then update the total object in the database
+              axios.post('http://localhost:5000/totals/update/' + totalObjectID, totalObject).then(() => {
+                    //after adding food and udpating total, return to previous page
+                    navigate(-1)
+              }).catch(error => console.log(error));
+            }
+          }).catch(error => console.log(error));
+    }).catch(error => console.log(error));
+  }
+
+  function updateTotalsIfDateDidNotChange() {
+      
+    //calculate the new totalCalories and totalProtein values by finding the differences in values
+    const caloriesDifference = parseInt(calories, 10) - oldCaloriesRef.current;
+    const proteinDifference = parseInt(protein, 10) - oldProteinRef.current;
+
+    //create a new total object with the new totalCalories and totalProtein values
+    const totalObject = {
+      calories: totalCalories + caloriesDifference,
+      protein: totalProtein + proteinDifference,
+    };
+
+
+    //update the total object in the database with the new total object
+    axios.post('http://localhost:5000/totals/update/' + totalObjectID, totalObject).then(()=> {
+          //after editing food and updating the total, return to home page
+          navigate(-1)
+    }).catch(error => console.log(error));
   }
 
   return (
     <div className="container">
-      <h3>Edit Food Log</h3>
+      <h3 className="mt-4">Edit Food</h3>
       <form onSubmit={(e) => onSubmit(e)}>
-        <div className="form-group">
-          <label>Username: </label>
-          <select
-            ref={userInput}
-            required
-            className="form-control"
-            value={username}
-            onChange={() => setUsername("Stevenlin55")}
-          >
-            {users.map(function (user) {
-              return (
-                <option key={user} value={user}>
-                  {user}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <div className="form-group">
+        <div className="form-group mt-4">
           <label>Name: </label>
           <input
             type="text"
@@ -85,29 +157,31 @@ const EditFood = (props) => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mt-2">
           <label>Calories: </label>
           <input
             type="number"
+            min="0"
             className="form-control"
             value={calories}
             onChange={(e) => setCalories(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mt-2">
           <label>Protein: </label>
           <input
             type="number"
+            min="0"
             className="form-control"
             value={protein}
             onChange={(e) => setProtein(e.target.value)}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group mt-2">
           <label>Date: </label>
           <div>
             <DatePicker
-              className="my-4 border-4"
+              className="mb-4 border-4"
               selected={date}
               onChange={(date) => setDate(date)}
             />
@@ -117,7 +191,7 @@ const EditFood = (props) => {
         <div className="form-group">
           <input
             type="submit"
-            value="Edit Food Log"
+            value="Edit Food"
             className="btn btn-primary"
           />
         </div>

@@ -1,0 +1,46 @@
+#date-picker {
+  height: 1.5rem;
+  width: 100%;
+  margin-left: 1px;
+  margin-right: 1px;
+  text-align: center;
+}
+
+#left-arrow, #right-arrow {
+  height: 1.7rem;
+  margin-top: 0.2px;
+}
+
+#right-arrow {
+  margin-left: 2px;
+}
+
+
+tr.spaceUnder>td {
+  padding-bottom: 5em;
+}
+
+.quick-add-input {
+  width: 5rem;
+}
+
+
+@media only screen and (max-width: 357px) {
+  .smaller-text {
+    font-size: 0.85rem;
+  }
+}
+
+
+@media only screen and (max-width: 353px) {
+  .smaller-text {
+    font-size: 0.7rem;
+  }
+}
+
+@media only screen and (max-width: 324px) {
+  .smaller-text {
+    font-size: 0.675rem;
+  }
+}
+

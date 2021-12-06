@@ -1,0 +1,36 @@
+.food-div {
+    border-bottom-width: 1px;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: rgb(96, 165, 250);
+}
+
+.food-div:hover, .food-div:active, .food-div:focus {
+    background-color: rgb(231, 233, 236);
+    color: rgb(245, 158, 11);
+}
+
+#nutrition-facts-buttons {
+    display: none;
+}
+
+@media only screen and (max-width: 930px) {
+    #nutrition-facts-buttons {
+       width: 7rem;
+    }
+}
+
+
+    
+
+@media only screen and (max-width: 640px) {
+    .nutrition-facts{
+        margin-top: 1rem;
+    }
+}
+
+@media only screen and (max-width: 321px) {
+    .nutrition-facts-text{
+        font-size: 0.99rem;
+    }
+}

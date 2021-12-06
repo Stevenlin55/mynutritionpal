@@ -1,0 +1,5 @@
+@media only screen and (max-width: 639.5px) {
+    #navbar-links{
+        display: none;
+    }
+}

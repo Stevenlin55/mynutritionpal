@@ -17,7 +17,7 @@ app.use(express.json());
 const uri = process.env.ATLAS_URI;
 
 //connect to mongodb
-mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true, useCreateIndex: true });
+mongoose.connect(uri, { useUnifiedTopology: true, useNewUrlParser: true});
 const connection = mongoose.connection;
 connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
@@ -26,11 +26,13 @@ connection.once('open', () => {
 //these are the routes that will allow us to access the different endpoints
 const foodsRouter = require('./routes/foods');
 const usersRouter = require('./routes/users');
+const totalsRouter = require('./routes/totals');
 
 //if we go to /foods, we will go to the foods router
 //if we go to /users, we will go to the users router
 app.use('/foods', foodsRouter);
 app.use('/users', usersRouter);
+app.use('/totals', totalsRouter);
 
 //this is the listener that will start the server on port 5000
 app.listen(port, () => {

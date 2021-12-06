@@ -14,13 +14,7 @@ router.route('/register').post((req, res) => {
   const username = req.body.username;
   const password = req.body.password;
 
-  //create a new user using the username and password provided
-  const newUser = new User({username, password});
-
-  //save the new user to the database
-  newUser.save()
-    .then(() => res.json('User is registered'))
-    .catch(err => res.status(400).json('Error: ' + err));
+  register(res, username, password)
 });
 
 //endpoint that handles HTTP POST requests to /users (user login)
@@ -30,6 +24,33 @@ router.route('/login').post((req, res) => {
 
   login(res, username, password);
 });
+
+
+//function that handles user registration
+async function register(res, username, password) {
+  try {
+    //check if the username already exists in the database
+    const usernameExists = await User.findOne({username: username});
+    if (usernameExists) {
+      res.status(403).json('Username already exists');
+    } else {
+      //if the username does not exist, check if the password already exists
+      const passwordExists = await User.findOne({password: password});
+      if (passwordExists) {
+        res.status(403).json('Password already exists');
+      } else {
+        //if the username and password do not exist, create a new user
+        const newUser = new User({username: username, password: password});
+        newUser.save()
+          .then(() => res.json('User added!'))
+          .catch(err => res.status(400).json('Error: ' + err));
+    }
+  }
+  } catch (err) {
+    res.status(400).json('Error: ' + err);
+  }
+}
+
 
 //function that handles user login
 async function login(res, username, password) {

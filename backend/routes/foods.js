@@ -11,7 +11,7 @@ router.route('/').get((req, res) => {
 
 //endpoint that handles HTTP POST requests to /foods
 router.route('/add').post((req, res) => {
-  const username = req.body.username;
+  const userID = req.body.userID;
   const name = req.body.name;
   const calories = Number(req.body.calories);
   const protein = Number(req.body.protein);
@@ -19,7 +19,7 @@ router.route('/add').post((req, res) => {
 
   //create a new food object with provided info 
   const newFood = new Food({
-    username,
+    userID,
     name,
     calories,
     protein,
@@ -48,6 +48,7 @@ router.route('/:id').delete((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+
 //endpoint that handles HTTP UPDATE requests to /foods/id
 router.route('/update/:id').post((req, res) => {
   //find the food with the provided id and then update it with the provided info 
@@ -57,12 +58,23 @@ router.route('/update/:id').post((req, res) => {
       food.name = req.body.name;
       food.calories = Number(req.body.calories);
       food.protein = Number(req.body.protein);
+      food.date = Date.parse(req.body.date);
       food.save()
         .then(() => res.json('Food updated'))
         .catch(err => res.status(400).json('Error: ' + err));
     })
     .catch(err => res.status(400).json('Error: ' + err));
 });
+
+
+//endpoint that handles HTTP GET requests to /foods/userID
+router.route('/user/:userID').get((req, res) => {
+  //find all foods with the provided userID
+  Food.find({userID: req.params.userID})
+    .then(foods => res.json(foods))
+    .catch(err => res.status(400).json('Error: ' + err));
+});
+
 
 //export router
 module.exports = router;
