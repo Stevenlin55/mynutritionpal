@@ -34,7 +34,7 @@ app.use('/foods', foodsRouter);
 app.use('/users', usersRouter);
 app.use('/totals', totalsRouter);
 
-//this is the listener that will start the server on port 5000
+//this is the listener that will start the server on port 5000. Heroku will set the port for us
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
