@@ -35,7 +35,7 @@ app.use('/users', usersRouter);
 app.use('/totals', totalsRouter);
 
 //this is the listener that will start the server on port 5000
-app.listen(port, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Server is running on port: ${port}`);
 });
 
