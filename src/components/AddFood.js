@@ -39,13 +39,13 @@ const AddFood = (props) => {
         }
         
         //add the new food object to the database
-        axios.post('https://mynutritionpal.herokuapp.com/add', food).catch(error => console.log(error));
+        axios.post('https://mynutritionpal.herokuapp.com/foods/add', food).catch(error => console.log(error));
         
         //we now have to update the total object in the database with the new food object's values
         //first get the total object from the database for the user
         let totalObject = null; 
        
-        axios.get('https://mynutritionpal.herokuapp.com/' + user).then(res => {
+        axios.get('https://mynutritionpal.herokuapp.com/totals/user/' + user).then(res => {
           
             //convert selected date into a different format
             let selectedDate = new Date(
