@@ -39,13 +39,13 @@ const AddFood = (props) => {
         }
         
         //add the new food object to the database
-        axios.post('http://localhost:5000/foods/add', food).catch(error => console.log(error));
+        axios.post('https://mynutritionpal.herokuapp.com/add', food).catch(error => console.log(error));
         
         //we now have to update the total object in the database with the new food object's values
         //first get the total object from the database for the user
         let totalObject = null; 
        
-        axios.get('http://localhost:5000/totals/user/' + user).then(res => {
+        axios.get('https://mynutritionpal.herokuapp.com/' + user).then(res => {
           
             //convert selected date into a different format
             let selectedDate = new Date(
@@ -75,7 +75,7 @@ const AddFood = (props) => {
                     date: date
                 }
                 //add the new total object to the database and then return to previous page
-                axios.post('http://localhost:5000/totals/add', totalObject).then(() =>  navigate(-1)).catch(error => console.log(error));
+                axios.post('https://mynutritionpal.herokuapp.com/totals/add', totalObject).then(() =>  navigate(-1)).catch(error => console.log(error));
             }else { //if the total array is not empty, then we need to update the local object holding the totals
               totalObject = {
                 calories: total[0].calories,
@@ -87,7 +87,7 @@ const AddFood = (props) => {
               totalObject.calories += parseInt(food.calories, 10);
               totalObject.protein += parseInt(food.protein, 10);
               //then update the total object in the database
-              axios.post('http://localhost:5000/totals/update/' + totalObjectID, totalObject).then(() => {
+              axios.post('https://mynutritionpal.herokuapp.com/totals/update/' + totalObjectID, totalObject).then(() => {
                     //after adding food and udpating total, return to previous page
                     navigate(-1)
               }).catch(error => console.log(error));

@@ -20,7 +20,7 @@ export default function QuickAddModal(props) {
     }; 
 
     //update the total object in the database with the new total object
-    axios.post("http://localhost:5000/totals/update/" + localStorage.getItem('totalID'), totalObject)
+    axios.post("https://mynutritionpal.herokuapp.com/totals/update/" + localStorage.getItem('totalID'), totalObject)
           .catch((error) => console.log(error));
     
     //the props contain the setTotal hook that updates the totals so we will use that to update the totals

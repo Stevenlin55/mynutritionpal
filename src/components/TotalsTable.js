@@ -52,7 +52,7 @@ const TotalsTable = (props) => {
         }
     
         //when the component mounts, we will fetch all totals from the database
-        axios.get("http://localhost:5000/totals/user/" + user)
+        axios.get("https://mynutritionpal.herokuapp.com/totals/user/" + user)
         .then((res) => {
           let allTotals = res.data;
           let totalsForToday = updateTotals(date, allTotals, user);
@@ -74,7 +74,7 @@ const TotalsTable = (props) => {
             date: date
         }
         //send the total object to the database
-        axios.post("http://localhost:5000/totals/add", total).then((res) => {
+        axios.post("https://mynutritionpal.herokuapp.com/totals/add", total).then((res) => {
             //after sending to the database, get the total id from the response
             const totalID = res.data._id;
             //store the total id in local storage

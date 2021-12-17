@@ -20,7 +20,7 @@ const FoodDiary = (props) => {
     let isSubscribed = true;
 
       //when page loads, get all foods and totals from database
-        axios.get("http://localhost:5000/foods/user/" + user)
+        axios.get("https://mynutritionpal.herokuapp.com/foods/user/" + user)
         .then((res) => {
           if (isSubscribed) {
             let allFood = res.data;
@@ -56,16 +56,16 @@ const FoodDiary = (props) => {
 
   //when user clicks on trashcan icon on food, delete food from database
   function deleteFood(id, calories, protein) {
-    axios.delete("http://localhost:5000/foods/" + id).catch((error) => console.log(error));
+    axios.delete("https://mynutritionpal.herokuapp.com/foods/" + id).catch((error) => console.log(error));
     //after deleting food, update totals by first getting the Total object from the database
     let totalObject = null;
-    axios.get('http://localhost:5000/totals/' + localStorage.getItem('totalID')).then(res => {
+    axios.get('https://mynutritionpal.herokuapp.com/totals/' + localStorage.getItem('totalID')).then(res => {
       totalObject = res.data;
       //then update the totals by subtracting the calories and protein from the food deleted
       totalObject.calories -= calories;
       totalObject.protein -= protein;
       //then update the total object in the database
-      axios.post('http://localhost:5000/totals/update/' + localStorage.getItem('totalID'), totalObject)
+      axios.post('https://mynutritionpal.herokuapp.com/totals/update/' + localStorage.getItem('totalID'), totalObject)
         .then(() => {
            //remove food from foods displayed state and update the frontend
             let newList = foodToShow.filter((food) => food._id !== id);

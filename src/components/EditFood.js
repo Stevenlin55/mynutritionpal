@@ -23,7 +23,7 @@ const EditFood = (props) => {
 
   useEffect(() => {
     const fetchFoodData = () => {
-      axios.get("http://localhost:5000/foods/" + id)
+      axios.get("https://mynutritionpal.herokuapp.com/foods/" + id)
         .then((res) => {
           setName(res.data.name);
           setCalories(res.data.calories);
@@ -51,7 +51,7 @@ const EditFood = (props) => {
     };
 
     //then we will update the foods object in the database with the new food object
-    axios.post("http://localhost:5000/foods/update/" + id, food).catch((error) => console.log(error));
+    axios.post("https://mynutritionpal.herokuapp.com/foods/update/" + id, food).catch((error) => console.log(error));
 
     //if the user changed the date, we will update totals and food based on that change
     if (oldDateRef.current.getTime() !== date.getTime()) {
@@ -69,10 +69,10 @@ const EditFood = (props) => {
       protein: totalProtein - oldProteinRef.current,
     };
     //update the total object in the database with the new total object
-    axios.post('http://localhost:5000/totals/update/' + totalObjectID, totalObject).then(()=> {
+    axios.post('https://mynutritionpal.herokuapp.com/totals/update/' + totalObjectID, totalObject).then(()=> {
           //after editing food and updating the total for the old date, we will update the total object for the new date
           //first get the total object from the database for the new date by finding the right total object for the user
-          axios.get('http://localhost:5000/totals/user/' + user).then(res => {
+          axios.get('https://mynutritionpal.herokuapp.com/totals/user/' + user).then(res => {
           
             //convert selected date into a different format
             let selectedDate = new Date(
@@ -102,7 +102,7 @@ const EditFood = (props) => {
                     date: date
                 }
                 //add the new total object to the database and then return to previous page
-                axios.post('http://localhost:5000/totals/add', totalObject).then(() =>  navigate(-1)).catch(error => console.log(error));
+                axios.post('https://mynutritionpal.herokuapp.com/totals/add', totalObject).then(() =>  navigate(-1)).catch(error => console.log(error));
             }else { //if the total array is not empty, then we need to update the local object holding the totals
               totalObject = {
                 calories: total[0].calories,
@@ -114,7 +114,7 @@ const EditFood = (props) => {
               totalObject.calories += parseInt(calories, 10);
               totalObject.protein += parseInt(protein, 10);
               //then update the total object in the database
-              axios.post('http://localhost:5000/totals/update/' + totalObjectID, totalObject).then(() => {
+              axios.post('https://mynutritionpal.herokuapp.com/totals/update/' + totalObjectID, totalObject).then(() => {
                     //after adding food and udpating total, return to previous page
                     navigate(-1)
               }).catch(error => console.log(error));
@@ -137,7 +137,7 @@ const EditFood = (props) => {
 
 
     //update the total object in the database with the new total object
-    axios.post('http://localhost:5000/totals/update/' + totalObjectID, totalObject).then(()=> {
+    axios.post('https://mynutritionpal.herokuapp.com/totals/update/' + totalObjectID, totalObject).then(()=> {
           //after editing food and updating the total, return to home page
           navigate(-1)
     }).catch(error => console.log(error));

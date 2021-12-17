@@ -19,7 +19,7 @@ const MyFoods = (props) => {
         let isSubscribed = true;
     
           //when page loads, get all foods and totals from database
-            axios.get("http://localhost:5000/foods/user/" + user)
+            axios.get("https://mynutritionpal.herokuapp.com/foods/user/" + user)
             .then((res) => {
               if (isSubscribed) {
                   setFoods(res.data);
@@ -27,7 +27,7 @@ const MyFoods = (props) => {
             })
             .catch((error) => console.log(error));
 
-            axios.get("http://localhost:5000/totals/user/" + user)
+            axios.get("https://mynutritionpal.herokuapp.com/totals/user/" + user)
             .then((res) => {
                 if (isSubscribed) {
                     setAllTotals(res.data);
@@ -119,16 +119,16 @@ const MyFoods = (props) => {
 
   //when user clicks on delete button, delete food from database
   function deleteFood() {
-    axios.delete("http://localhost:5000/foods/" + foodID).catch((error) => console.log(error));
+    axios.delete("https://mynutritionpal.herokuapp.com/foods/" + foodID).catch((error) => console.log(error));
     //after deleting food, update totals by first getting the Total object from the database. the total id is accessed from hook
     let totalObject = null;
-    axios.get('http://localhost:5000/totals/' + totalInfoForSelected.id).then(res => {
+    axios.get('https://mynutritionpal.herokuapp.com/totals/' + totalInfoForSelected.id).then(res => {
       totalObject = res.data;
       //then update the totals by subtracting the calories and protein from the food deleted
       totalObject.calories -= calories;
       totalObject.protein -= protein;
       //then update the total object in the database
-      axios.post('http://localhost:5000/totals/update/' + totalInfoForSelected.id, totalObject)
+      axios.post('https://mynutritionpal.herokuapp.com/totals/update/' + totalInfoForSelected.id, totalObject)
         .then(() => {
            //get rid of the food deleted from the foods array
               let updatedFoodList = foods.filter((food) => {

@@ -8,7 +8,7 @@ class Auth {
 
     login(username, password, callback) {
       //first we need to make a request to the server to see if we can login the user
-        axios.post("http://localhost:5000/users/login", { username, password })
+        axios.post("https://mynutritionpal.herokuapp.com/users/login", { username, password })
         .then((res) => {
           if (res.status === 200) {
             //if the user is authenticated, we store the token in local storage
@@ -35,7 +35,7 @@ class Auth {
 
     register(username, password) {
       //first we need to make a request to the server to see if we can register the user
-        axios.post("http://localhost:5000/users/register", { username, password })
+        axios.post("https://mynutritionpal.herokuapp.com/users/register", { username, password })
         .then((res) => {
           if (res.status === 200) {
             alert("You have successfully registered! Please sign in");
